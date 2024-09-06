@@ -17,34 +17,33 @@ This project is an E-commerce API built with FastAPI. It provides endpoints for 
 
 ## Installation
 1. Clone the repository:
-    ```bash
+    ```
     git clone https://github.com/yourusername/ecommerce-api.git
     cd ecommerce-api
     ```
 
 2. Create a virtual environment and activate it:
-    ```bash
+    ```
     python3 -m venv venv
     source venv/bin/activate
     ```
 
 3. Install the dependencies:
-    ```bash
+    ```
     pip install -r requirements.txt
     ```
 
 ## Configuration
 Create a `.env` file in the root directory and add the following environment variables:
-    ```env
-    APP_NAME=E-commerce API
-    MONGODB_URI=mongodb://localhost:27017
-    ACCESS_TOKEN_EXPIRE_MINUTES=30
-    SECRET_KEY=your_secret_key
-    ```
+  1. `APP_NAME=E-commerce API`
+  2. `MONGODB_URI=mongodb://localhost:27017`
+  3. `ACCESS_TOKEN_EXPIRE_MINUTES=30`
+  4. `SECRET_KEY=your_secret_key`
+
 
 ## Running the Application
 To run the application, use the following command:
-    ```bash
+    ```
     uvicorn main:app --reload
     ```
 
@@ -57,12 +56,12 @@ To obtain an access token, send a POST request to the `/token` endpoint with the
 - `password`: The user's password
 
 Example request:
-    ```bash
+    ```
     curl -X POST "http://localhost:8000/token" -H "Content-Type: application/x-www-form-urlencoded" -d "username=user&password=pass"
     ```
 
 The response will include the access token:
-    ```json
+    ```
     {
         "access_token": "your_access_token",
         "token_type": "bearer"
@@ -71,7 +70,7 @@ The response will include the access token:
 
 ### Using the Token
 Include the token in the `Authorization` header of requests to protected endpoints:
-    ```http
+    ```
     Authorization: Bearer your_access_token
     ```
 
@@ -134,7 +133,7 @@ Provides methods for shopping cart management, including adding, updating, and r
 
 ## Scaling and Traffic Handling
 
-To ensure that our E-commerce API can handle increased traffic and scale effectively, we will need implement several strategies and best practices:
+To ensure that our E-commerce API can handle increased traffic and scale effectively, we will need to implement several strategies and best practices:
 
 ### 1. Database Optimization
 - **Sharding**: For very large datasets, we can implement sharding to distribute data across multiple servers, improving read and write performance.
@@ -151,7 +150,7 @@ To ensure that our E-commerce API can handle increased traffic and scale effecti
 - **API Rate Limiting**: We will implement rate limiting to prevent abuse and ensure fair usage of our API. This will help in protecting our servers from being overwhelmed by too many requests from a single client.
 
 ### 5. Monitoring and Logging
-- **Real-Time Monitoring**: We will use monitoring tools like Prometheus and Grafana to track the performance and health of our API in real-time.
+- **Real-Time Monitoring**: We will use monitoring tools like Prometheus and Grafana to track the performance and health of our API in real time.
 - **Centralized Logging**: We can aggregate logs from all instances into a centralized logging system like ELK Stack (Elasticsearch, Logstash, Kibana) for easier analysis and troubleshooting.
 
 ### 6. Containerization and Orchestration
@@ -159,4 +158,4 @@ To ensure that our E-commerce API can handle increased traffic and scale effecti
 - **Kubernetes**: We will use Kubernetes for container orchestration, allowing us to manage, scale, and deploy our containerized applications efficiently. Kubernetes provides features like automatic scaling, load balancing, and self-healing, which are essential for handling increased traffic and ensuring high availability.
 - **CI/CD Pipeline**: We will implement a CI/CD pipeline using tools like Jenkins or GitHub Actions to automate the build, test, and deployment process. This ensures that new features and bug fixes are deployed quickly and reliably.
 
-By implementing these strategies, we ensure that our E-commerce API can handle increased traffic, scale effectively, and provide a reliable and responsive experience to our users.
+By implementing these strategies, we can ensure that our E-commerce API can handle increased traffic, scale effectively, and provide a reliable and responsive experience to our users.

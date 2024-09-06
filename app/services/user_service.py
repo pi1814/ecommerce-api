@@ -55,5 +55,5 @@ class UserService:
             return None
         return user
 
-    def serialize_to_user_out(self, user: UserModel) -> UserOut:
+    async def serialize_to_user_out(self, user: UserModel) -> UserOut:
         return { "id": str(user.id),"email": user.email,"is_active": user.is_active, "role": user.role, "username": user.username}

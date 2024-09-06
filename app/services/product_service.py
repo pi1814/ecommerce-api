@@ -39,7 +39,7 @@ class ProductService:
         cursor = self.db.products.find(filter_query)
         cursor.sort(sort_by, sort_order).skip(skip).limit(limit)
         products = await cursor.to_list(length=limit)
-        return [self.serialize_to_product_out(ProductModel(**product)) for product in products]
+        return [await self.serialize_to_product_out(ProductModel(**product)) for product in products]
 
     async def update_stock(self, product_id: str, quantity: int) -> bool:
         result = await self.db.products.update_one(
@@ -48,5 +48,5 @@ class ProductService:
         )
         return result.modified_count > 0
 
-    def serialize_to_product_out(self, product: ProductModel) -> ProductOut:
+    async def serialize_to_product_out(self, product: ProductModel) -> ProductOut:
         return { "id": str(product.id),"name": product.name,"description": product.description, "price": product.price, "stock": product.stock, "category": product.category}

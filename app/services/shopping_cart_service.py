@@ -1,6 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.models.shopping_cart import ShoppingCartModel, CartItem
-from app.schemas.shopping_cart import ShoppingCartCreate, CartItemCreate, CartItemUpdate
+from app.schemas.shopping_cart import ShoppingCartCreate, CartItemCreate, CartItemUpdate, ShoppingCartOut
 from bson import ObjectId
 from typing import Optional
 
@@ -65,3 +65,7 @@ class ShoppingCartService:
     async def delete_cart(self, cart_id: str) -> bool:
         result = await self.db.shopping_carts.delete_one({"_id": ObjectId(cart_id)})
         return result.deleted_count > 0
+    
+    async def serialize_to_shopping_cart_out(self, cart: ShoppingCartModel) -> ShoppingCartOut:
+        cart_items_out = [{"id": str(cart_item.product_id), "quantity": cart_item.quantity} for cart_item in cart.items]
+        return { "id": str(cart.id),"user_id": str(cart.user_id),"items": cart_items_out}

@@ -20,12 +20,12 @@ async def create_user(user: UserCreate, db: AsyncIOMotorClient = Depends(get_db)
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered"
         )
-    return user_service.serialize_to_user_out(await user_service.create_user(user))
+    return await user_service.serialize_to_user_out(await user_service.create_user(user))
 
 @router.get("/me", response_model=UserOut)
 async def read_users_me(current_user: UserOut = Depends(get_current_active_user), db: AsyncIOMotorClient = Depends(get_db)):
     user_service = UserService(db)
-    return user_service.serialize_to_user_out(current_user)
+    return await user_service.serialize_to_user_out(current_user)
 
 @router.get("/{user_id}", response_model=UserOut)
 async def get_user(user_id: str, db: AsyncIOMotorClient = Depends(get_db), current_user: UserOut = Depends(get_current_active_user)):
@@ -41,7 +41,7 @@ async def get_user(user_id: str, db: AsyncIOMotorClient = Depends(get_db), curre
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not enough permissions"
         )
-    return user_service.serialize_to_user_out(user)
+    return await user_service.serialize_to_user_out(user)
 
 @router.get("/", response_model=List[UserOut])
 async def get_users(skip: int = 0, limit: int = 10, db: AsyncIOMotorClient = Depends(get_db), current_user: UserOut = Depends(get_current_admin_user)):
@@ -62,7 +62,7 @@ async def update_user(user_id: str, user_update: UserUpdate, db: AsyncIOMotorCli
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found"
         )
-    return user_service.serialize_to_user_out(updated_user)
+    return await user_service.serialize_to_user_out(updated_user)
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(user_id: str, db: AsyncIOMotorClient = Depends(get_db), current_user: UserOut = Depends(get_current_admin_user)):

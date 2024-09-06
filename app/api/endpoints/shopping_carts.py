@@ -14,7 +14,8 @@ async def create_shopping_cart(
     current_user: UserOut = Depends(get_current_active_user)
 ):
     cart_service = ShoppingCartService(db)
-    return await cart_service.create_cart(cart)
+    new_cart = await cart_service.create_cart(cart)
+    return await cart_service.serialize_to_shopping_cart_out(new_cart)
 
 @router.get("/{cart_id}", response_model=ShoppingCartOut)
 async def get_shopping_cart(
@@ -34,7 +35,7 @@ async def get_shopping_cart(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to access this shopping cart"
         )
-    return cart
+    return await cart_service.serialize_to_shopping_cart_out(cart)
 
 @router.get("/user/{user_id}", response_model=ShoppingCartOut)
 async def get_shopping_cart_by_user(
@@ -54,7 +55,7 @@ async def get_shopping_cart_by_user(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Shopping cart not found for this user"
         )
-    return cart
+    return await cart_service.serialize_to_shopping_cart_out(cart)
 
 @router.post("/{cart_id}/items", response_model=ShoppingCartOut)
 async def add_item_to_cart(
@@ -76,7 +77,7 @@ async def add_item_to_cart(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Shopping cart not found"
         )
-    return updated_cart
+    return await cart_service.serialize_to_shopping_cart_out(updated_cart)
 
 @router.put("/{cart_id}/items/{product_id}", response_model=ShoppingCartOut)
 async def update_cart_item(
@@ -99,7 +100,7 @@ async def update_cart_item(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Shopping cart or item not found"
         )
-    return updated_cart
+    return await cart_service.serialize_to_shopping_cart_out(updated_cart)
 
 @router.delete("/{cart_id}/items/{product_id}", response_model=ShoppingCartOut)
 async def remove_item_from_cart(
@@ -121,7 +122,7 @@ async def remove_item_from_cart(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Shopping cart or item not found"
         )
-    return updated_cart
+    return await cart_service.serialize_to_shopping_cart_out(updated_cart)
 
 @router.delete("/{cart_id}/clear", response_model=ShoppingCartOut)
 async def clear_shopping_cart(
@@ -142,7 +143,7 @@ async def clear_shopping_cart(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Shopping cart not found"
         )
-    return cleared_cart
+    return await cart_service.serialize_to_shopping_cart_out(cleared_cart)
 
 @router.delete("/{cart_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_shopping_cart(

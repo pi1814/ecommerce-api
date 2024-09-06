@@ -30,7 +30,7 @@ async def get_product(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Product not found"
         )
-    return product_service.serialize_to_product_out(product)
+    return await product_service.serialize_to_product_out(product)
 
 @router.get("/", response_model=List[ProductOut])
 async def get_products(
@@ -60,7 +60,7 @@ async def update_product(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Product not found"
         )
-    return product_service.serialize_to_product_out(updated_product)
+    return await product_service.serialize_to_product_out(updated_product)
 
 @router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_product(
